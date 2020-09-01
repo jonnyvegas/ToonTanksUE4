@@ -18,6 +18,18 @@ public:
 	// Sets default values for this pawn's properties
 	ATTPawnBase();
 
+	UFUNCTION(BlueprintCallable, Category = "Movement Variables")
+	float SetMovementSpeed(float NewSpeed);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Movement Variables")
+	float GetMovementSpeed();
+
+	UFUNCTION(BlueprintCallable, Category = "Movement Variables")
+	float SetRotationSpeed(float NewSpeed);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Movement Variables")
+	float GetRotationSpeed();
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -34,4 +46,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UTTPawnMovementComponent* MovementComp;
+
+	UPROPERTY(EditAnywhere)
+	float MovementSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float RotationSpeed;
 };

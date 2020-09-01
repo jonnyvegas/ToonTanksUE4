@@ -41,14 +41,13 @@ private:
 	UPROPERTY()
 	FRotator CurrentRotation;
 
-	UPROPERTY(EditAnywhere)
-	float MovementSpeed;
 
-	UPROPERTY(EditAnywhere)
-	float RotationSpeed;
 
 	UPROPERTY()
 	float NewYaw;
+
+	UPROPERTY()
+	UWorld* TheWorld;
 
 
 protected:

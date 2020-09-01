@@ -30,3 +30,32 @@ ATTPawnBase::ATTPawnBase()
 	MovementComp = CreateDefaultSubobject<UTTPawnMovementComponent>(TEXT("PawnMovementComp"));
 
 }
+
+float ATTPawnBase::SetMovementSpeed(float NewSpeed)
+{
+	// Negative speed doesn't make sense at this time.
+	if (NewSpeed >= 0.f)
+	{
+		MovementSpeed = NewSpeed;
+	}
+	return GetMovementSpeed();
+}
+
+float ATTPawnBase::GetMovementSpeed()
+{
+	return MovementSpeed;
+}
+
+float ATTPawnBase::SetRotationSpeed(float NewSpeed)
+{
+	if (NewSpeed >= 0.f)
+	{
+		RotationSpeed = NewSpeed;
+	}
+	return GetRotationSpeed();
+}
+
+float ATTPawnBase::GetRotationSpeed()
+{
+	return RotationSpeed;
+}

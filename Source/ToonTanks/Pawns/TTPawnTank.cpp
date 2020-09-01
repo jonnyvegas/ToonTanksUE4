@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Pawns/TTPawnBase.h"
 #include "Components/CapsuleComponent.h"
+#include "TTPawnMovementComponent.h"
 
 
 ATTPawnTank::ATTPawnTank()
@@ -41,10 +42,15 @@ void ATTPawnTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void ATTPawnTank::MoveFwd(float AxisVal)
 {
-	if (GetWorld())
+	if (!TheWorld)
 	{
-		SetActorLocation(FMath::VInterpTo(GetActorLocation(), GetActorLocation() + (GetActorForwardVector() * AxisVal * MovementSpeed), GetWorld()->GetDeltaSeconds(), MovementSpeed));
+		TheWorld = GetWorld();
 	}
+	SetActorLocation(FMath::VInterpTo(GetActorLocation(), GetActorLocation() + (GetActorForwardVector() * AxisVal * MovementSpeed), TheWorld->GetDeltaSeconds(), MovementSpeed));
+// 	if (MovementComp)
+// 	{
+// 		AddMovementInput(GetActorForwardVector(), 1000.f);
+// 	}
 }
 
 void ATTPawnTank::MoveRight(float AxisVal)
