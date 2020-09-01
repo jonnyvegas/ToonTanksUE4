@@ -24,9 +24,31 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+	void MoveFwd(float AxisVal);
+
+	UFUNCTION()
+	void MoveRight(float AxisVal);
+
+	UFUNCTION()
+	void RotateTurret(float AxisVal);
+
 private:
 
-	
+	UPROPERTY()
+	FVector CurrentDirection;
+
+	UPROPERTY()
+	FRotator CurrentRotation;
+
+	UPROPERTY(EditAnywhere)
+	float MovementSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float RotationSpeed;
+
+	UPROPERTY()
+	float NewYaw;
 
 
 protected:
@@ -35,7 +57,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		class USpringArmComponent* SpringArmComp;
+	class USpringArmComponent* SpringArmComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* CameraComp;

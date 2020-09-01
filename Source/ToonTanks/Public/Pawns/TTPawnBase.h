@@ -32,4 +32,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class USceneComponent* ProjectileSpawnComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UTTPawnMovementComponent* MovementComp;
 };

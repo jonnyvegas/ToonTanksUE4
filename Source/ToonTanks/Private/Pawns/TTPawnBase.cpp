@@ -5,6 +5,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
+#include "GameFramework/MovementComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
+#include "TTPawnMovementComponent.h"
 
 // Sets default values
 ATTPawnBase::ATTPawnBase()
@@ -23,5 +26,7 @@ ATTPawnBase::ATTPawnBase()
 
 	ProjectileSpawnComp = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnComp"));
 	ProjectileSpawnComp->SetupAttachment(TurretMesh);
+
+	MovementComp = CreateDefaultSubobject<UTTPawnMovementComponent>(TEXT("PawnMovementComp"));
 
 }
