@@ -27,6 +27,10 @@ private:
 
 	class ATTPawnTank* PawnTank;
 
+	
+
+	float GetDistanceToPlayer();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,6 +38,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float FireRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DistanceThreshold;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
