@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Movement Variables")
 	float GetRotationSpeed();
 
+	UFUNCTION()
+	virtual void RotateToLook();
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -46,6 +49,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UTTPawnMovementComponent* MovementComp;
+
+	UPROPERTY()
+	class ATTPlayerController* PlayerController;
 
 	UPROPERTY(EditAnywhere)
 	float MovementSpeed;

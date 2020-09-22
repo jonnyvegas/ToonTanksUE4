@@ -59,3 +59,9 @@ float ATTPawnBase::GetRotationSpeed()
 {
 	return RotationSpeed;
 }
+
+void ATTPawnBase::RotateToLook()
+{
+
+}
+

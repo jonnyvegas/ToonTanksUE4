@@ -7,6 +7,8 @@
 #include "Pawns/TTPawnBase.h"
 #include "Components/CapsuleComponent.h"
 #include "TTPawnMovementComponent.h"
+#include "TTPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ATTPawnTank::ATTPawnTank()
@@ -29,6 +31,7 @@ ATTPawnTank::ATTPawnTank()
 void ATTPawnTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	RotateToLook();
 
 }
 
@@ -56,6 +59,7 @@ void ATTPawnTank::MoveFwd(float AxisVal)
 void ATTPawnTank::MoveRight(float AxisVal)
 {
 //	AddMovementInput(GetActorRightVector(), AxisVal);
+	RotateTurret(AxisVal);
 }
 
 void ATTPawnTank::RotateTurret(float AxisVal)
@@ -69,7 +73,44 @@ void ATTPawnTank::RotateTurret(float AxisVal)
 	}
 }
 
+void ATTPawnTank::RotateToLook()
+{
+	if (PlayerController)
+	{
+		if (PlayerController->GetMousePosition(MouseX, MouseY))
+		{
+			MouseLoc.X = MouseX;
+			MouseLoc.Y = MouseY;
+			if (UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseLoc, ScreenLoc, ScreenDirection) && TurretMesh)
+			{
+				TurretMeshRot = TurretMesh->GetComponentRotation(); 
+				TurretMeshRot.Yaw = FRotationMatrix::MakeFromX(ScreenDirection).Rotator().Yaw;
+				TurretMesh->SetWorldRotation(TurretMeshRot);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("didn't deproject"));
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Mouse invalid"))
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PC Invalid."))
+	}
+}
+
 void ATTPawnTank::BeginPlay()
 {
 	Super::BeginPlay();
+	PlayerController = Cast<ATTPlayerController>(GetWorld()->GetFirstPlayerController());
+	MouseX = -1.f;
+	MouseY = -1.f;
+	ScreenLoc = FVector(FVector::ZeroVector);
+	ScreenDirection = FVector(FVector::ZeroVector);
+	MouseLoc = FVector2D(-1.f, -1.f);
+	TurretMeshRot = FRotator(FRotator::ZeroRotator);
 }

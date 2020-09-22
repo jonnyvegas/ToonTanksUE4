@@ -33,6 +33,11 @@ public:
 	UFUNCTION()
 	void RotateTurret(float AxisVal);
 
+	//UFUNCTION()
+	void RotateToLook() override;
+
+	FRotator TurretMeshRot;
+
 private:
 
 	UPROPERTY()
@@ -48,6 +53,21 @@ private:
 
 	UPROPERTY()
 	UWorld* TheWorld;
+
+	UPROPERTY()
+	float MouseX;
+
+	UPROPERTY()
+	float MouseY;
+
+	UPROPERTY()
+	FVector ScreenLoc;
+
+	UPROPERTY()
+	FVector ScreenDirection;
+
+	UPROPERTY()
+	FVector2D MouseLoc;
 
 
 protected:
