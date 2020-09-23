@@ -52,10 +52,6 @@ void ATTPawnTank::MoveFwd(float AxisVal)
 		TheWorld = GetWorld();
 	}
 	SetActorLocation(FMath::VInterpTo(GetActorLocation(), GetActorLocation() + (GetActorForwardVector() * AxisVal * MovementSpeed), TheWorld->GetDeltaSeconds(), MovementSpeed));
-// 	if (MovementComp)
-// 	{
-// 		AddMovementInput(GetActorForwardVector(), 1000.f);
-// 	}
 }
 
 void ATTPawnTank::MoveRight(float AxisVal)
@@ -108,6 +104,7 @@ void ATTPawnTank::RotateToLook(FVector Target)
 void ATTPawnTank::Fire()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Tank fire!"));
+	Super::Fire();
 }
 
 void ATTPawnTank::BeginPlay()

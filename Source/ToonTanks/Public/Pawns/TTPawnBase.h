@@ -34,7 +34,7 @@ public:
 	virtual void RotateToLook(FVector Target) {};
 
 	UFUNCTION()
-	virtual void Fire() {};
+	virtual void Fire();
 
 protected:
 
@@ -67,4 +67,7 @@ protected:
 
 	UPROPERTY()
 	FHitResult HitResult;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ATTProjectile> ProjectileClass;
 };

@@ -6,6 +6,7 @@
 #include "ToonTanks/Pawns/TTPawnTank.h"
 #include "Components/SphereComponent.h"
 #include "TimerManager.h"
+#include "TTProjectile.h"
 
 ATTPawnTurret::ATTPawnTurret()
 {
@@ -19,29 +20,12 @@ ATTPawnTurret::ATTPawnTurret()
 
 void ATTPawnTurret::CheckFireCondition()
 {
-	// Player must be valid and not dead.
-// 	if (PawnTank /*&&  !PawnTank->GetIsDead()*/&& GetDistanceToPlayer() <= DistanceThreshold && GetWorld())
-// 	{
-// 		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, this, &ATTPawnTurret::RotateToLook, 0.01f, true);
-// 	}
-// 	// Clear the rotation timer.
-// 	else
-// 	{
-// 		GetWorld()->GetTimerManager().ClearTimer(RotateTurretTimerHandle);
-// 		//UE_LOG(LogTemp, Warning, TEXT("Clearing check fire condition timer"));
-// 	}
-
-	// Check if the player is in range and if so, fire
 
 }
 
 void ATTPawnTurret::InitializePawnTank()
 {
-// 	PawnTank = Cast<ATTPawnTank>(UGameplayStatics::GetPlayerPawn(this, 0));
-// 	if (PawnTank)
-// 	{
-// 		UE_LOG(LogTemp, Warning, TEXT("Pawn initialized!"));
-// 	}
+
 }
 
 float ATTPawnTurret::GetDistanceToPlayer()
@@ -61,25 +45,28 @@ void ATTPawnTurret::AcquireTargetAndRotate()
 
 void ATTPawnTurret::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	PawnTank = Cast<ATTPawnTank>(OtherActor);
+	ATTPawnTank* ThePawnTank = Cast<ATTPawnTank>(OtherActor); 
 	
-	if (PawnTank)
+	if (ThePawnTank)
 	{
-		RotateTurretTimerDel = FTimerDelegate::CreateUObject(this, &ATTPawnTurret::RotateToLook, GetActorLocation() - PawnTank->GetActorLocation());
-		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, RotateTurretTimerDel, 0.02f, true);
+		PawnTank = ThePawnTank;
 		GetWorld()->GetTimerManager().SetTimer(FireRateTimerHandle, this, &ATTPawnTurret::Fire, 2.f, true);
+		RotateTurretTimerDel = FTimerDelegate::CreateUObject(this, &ATTPawnTurret::RotateToLook, GetActorLocation() - PawnTank->GetActorLocation());
+		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, RotateTurretTimerDel, 0.04f, true);
 	}
 }
 
 void ATTPawnTurret::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	PawnTank = Cast<ATTPawnTank>(OtherActor);
+	ATTPawnTank* ThePawnTank = Cast<ATTPawnTank>(OtherActor);
 
-	if (PawnTank)
+	if (ThePawnTank)
 	{
+		PawnTank = ThePawnTank;
 		GetWorld()->GetTimerManager().ClearTimer(RotateTurretTimerHandle);
+		GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
 	}
-	GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
+	
 }
 
 void ATTPawnTurret::Tick(float DeltaTime)
@@ -101,7 +88,7 @@ void ATTPawnTurret::RotateToLook(FVector Target)
 
 void ATTPawnTurret::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Turret fire!"));
+	Super::Fire();
 }
 
 void ATTPawnTurret::BeginPlay()
@@ -109,10 +96,7 @@ void ATTPawnTurret::BeginPlay()
 	Super::BeginPlay();
 	FireRate = 2.f;
 	TurretRotRate = 10.f;
-	InitializePawnTank();
 	// 500 UU ~ 16.5 ft
 	DistanceThreshold = 500.f;
-
-	//GetWorld()->GetTimerManager().SetTimer(FireRateTimerHandle, this, &ATTPawnTurret::CheckFireCondition, FireRate, true);
 
 }

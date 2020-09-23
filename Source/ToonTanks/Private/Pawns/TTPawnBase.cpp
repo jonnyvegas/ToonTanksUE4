@@ -8,6 +8,7 @@
 #include "GameFramework/MovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "TTPawnMovementComponent.h"
+#include "TTProjectile.h"
 
 // Sets default values
 ATTPawnBase::ATTPawnBase()
@@ -62,4 +63,13 @@ float ATTPawnBase::GetRotationSpeed()
 	return RotationSpeed;
 }
 
+void ATTPawnBase::Fire()
+{
+	if (ProjectileClass && GetWorld())
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		GetWorld()->SpawnActor<ATTProjectile>(ProjectileClass, ProjectileSpawnComp->GetComponentTransform(), SpawnParams);
+	}
+}
 

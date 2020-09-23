@@ -22,8 +22,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class UStaticMeshComponent* ProjectileMeshComp;
 
+	UPROPERTY(EditAnywhere, Category = "Components")
+	class UProjectileMovementComponent* ProjectileMovementComp;
+
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 };
