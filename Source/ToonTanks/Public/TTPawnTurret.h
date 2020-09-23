@@ -56,6 +56,8 @@ public:
 
 	void RotateToLook(FVector Target) override;
 
+	void Fire() override;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float FireRate;

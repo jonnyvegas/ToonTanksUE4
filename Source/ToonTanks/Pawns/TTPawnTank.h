@@ -39,7 +39,7 @@ public:
 	//UFUNCTION()
 	void RotateToLook(FVector Target) override;
 
-	FRotator TurretMeshRot;
+	void Fire() override;
 
 private:
 
@@ -70,6 +70,8 @@ private:
 	UPROPERTY()
 	FVector2D MouseLoc;
 
+	UPROPERTY()
+	FRotator TurretMeshRot;
 
 protected:
 	

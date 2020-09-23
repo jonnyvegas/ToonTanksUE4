@@ -33,6 +33,9 @@ public:
 	UFUNCTION()
 	virtual void RotateToLook(FVector Target) {};
 
+	UFUNCTION()
+	virtual void Fire() {};
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -61,4 +64,7 @@ protected:
 
 	UPROPERTY()
 	FVector TargetLoc;
+
+	UPROPERTY()
+	FHitResult HitResult;
 };

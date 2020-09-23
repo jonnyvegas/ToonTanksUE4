@@ -42,6 +42,7 @@ void ATTPawnTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveFwd", this, &ATTPawnTank::MoveFwd);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATTPawnTank::MoveRight);
 	PlayerInputComponent->BindAxis("RotateTurret", this, &ATTPawnTank::RotateTurret);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ATTPawnTank::Fire);
 }
 
 void ATTPawnTank::MoveFwd(float AxisVal)
@@ -82,7 +83,11 @@ FVector ATTPawnTank::GetTargetLoc()
 		{
 			MouseLoc.X = MouseX;
 			MouseLoc.Y = MouseY;
-			UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseLoc, WorldLoc, TargetLoc);
+			if (UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseLoc, WorldLoc, WorldDirection))
+			{
+				GetWorld()->LineTraceSingleByChannel(HitResult, WorldLoc, WorldLoc + WorldDirection * 100000, ECC_Visibility);
+				TargetLoc = HitResult.ImpactPoint;
+			}
 		}
 	}
 	return TargetLoc;
@@ -90,12 +95,19 @@ FVector ATTPawnTank::GetTargetLoc()
 
 void ATTPawnTank::RotateToLook(FVector Target)
 {
+// 	FVector NewTargetLoc = FVector(Target.X, Target.Y, TurretMesh->GetComponentLocation().Z);
+// 	TurretMeshRot = (NewTargetLoc - TurretMesh->GetComponentLocation()).Rotation();
 	TurretMeshRot = TurretMesh->GetComponentRotation(); 
-	TurretMeshRot.Yaw = FRotationMatrix::MakeFromX(Target).Rotator().Yaw;
+	TurretMeshRot.Yaw = FRotationMatrix::MakeFromX(Target - TurretMesh->GetComponentLocation()).Rotator().Yaw;
 	if (GetWorld())
 	{
 		TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretMesh->GetComponentRotation(), TurretMeshRot, GetWorld()->GetDeltaSeconds(), RotationSpeed));
 	}		
+}
+
+void ATTPawnTank::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Tank fire!"));
 }
 
 void ATTPawnTank::BeginPlay()

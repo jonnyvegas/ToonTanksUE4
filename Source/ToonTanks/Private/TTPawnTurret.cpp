@@ -67,6 +67,7 @@ void ATTPawnTurret::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	{
 		RotateTurretTimerDel = FTimerDelegate::CreateUObject(this, &ATTPawnTurret::RotateToLook, GetActorLocation() - PawnTank->GetActorLocation());
 		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, RotateTurretTimerDel, 0.02f, true);
+		GetWorld()->GetTimerManager().SetTimer(FireRateTimerHandle, this, &ATTPawnTurret::Fire, 2.f, true);
 	}
 }
 
@@ -78,6 +79,7 @@ void ATTPawnTurret::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		GetWorld()->GetTimerManager().ClearTimer(RotateTurretTimerHandle);
 	}
+	GetWorld()->GetTimerManager().ClearTimer(FireRateTimerHandle);
 }
 
 void ATTPawnTurret::Tick(float DeltaTime)
@@ -95,6 +97,11 @@ void ATTPawnTurret::RotateToLook(FVector Target)
 			TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretMesh->GetComponentRotation(), TurretRot, GetWorld()->GetDeltaSeconds(), TurretRotRate));
 		}
 	}
+}
+
+void ATTPawnTurret::Fire()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret fire!"));
 }
 
 void ATTPawnTurret::BeginPlay()
