@@ -85,7 +85,10 @@ void ATTPawnTank::RotateToLook()
 			{
 				TurretMeshRot = TurretMesh->GetComponentRotation(); 
 				TurretMeshRot.Yaw = FRotationMatrix::MakeFromX(ScreenDirection).Rotator().Yaw;
-				TurretMesh->SetWorldRotation(TurretMeshRot);
+				if (GetWorld())
+				{
+					TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretMesh->GetComponentRotation(), TurretMeshRot, GetWorld()->GetDeltaSeconds(), RotationSpeed));
+				}
 			}
 			else
 			{

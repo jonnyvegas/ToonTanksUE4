@@ -13,7 +13,9 @@ UCLASS()
 class TOONTANKS_API ATTPawnTurret : public ATTPawnBase
 {
 	GENERATED_BODY()
-	
+public:
+	ATTPawnTurret();
+
 private:
 
 	
@@ -23,21 +25,40 @@ private:
 	UFUNCTION()
 	void InitializePawnTank();
 
+	UFUNCTION()
+	float GetDistanceToPlayer();
+
+	UFUNCTION()
+	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UPROPERTY()
 	FTimerHandle FireRateTimerHandle;
 
+	UPROPERTY()
+	FTimerHandle RotateTurretTimerHandle;
+
+	UPROPERTY()
 	class ATTPawnTank* PawnTank;
 
-	
+	UPROPERTY(EditAnywhere)
+	class USphereComponent* SphereComp;
 
-	float GetDistanceToPlayer();
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void RotateToLook() override;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float FireRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float TurretRotRate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float DistanceThreshold;
