@@ -17,8 +17,6 @@ public:
 	ATTPawnTurret();
 
 private:
-
-	
 	UFUNCTION()
 	void CheckFireCondition();
 
@@ -27,6 +25,9 @@ private:
 
 	UFUNCTION()
 	float GetDistanceToPlayer();
+
+	UFUNCTION()
+	void AcquireTargetAndRotate();
 
 	UFUNCTION()
 	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -40,6 +41,8 @@ private:
 	UPROPERTY()
 	FTimerHandle RotateTurretTimerHandle;
 
+	FTimerDelegate RotateTurretTimerDel;
+
 	UPROPERTY()
 	class ATTPawnTank* PawnTank;
 
@@ -51,7 +54,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void RotateToLook() override;
+	void RotateToLook(FVector Target) override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

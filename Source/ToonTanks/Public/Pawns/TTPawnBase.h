@@ -31,7 +31,7 @@ public:
 	float GetRotationSpeed();
 
 	UFUNCTION()
-	virtual void RotateToLook();
+	virtual void RotateToLook(FVector Target) {};
 
 protected:
 
@@ -58,4 +58,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	float RotationSpeed;
+
+	UPROPERTY()
+	FVector TargetLoc;
 };

@@ -29,6 +29,8 @@ ATTPawnBase::ATTPawnBase()
 
 	MovementComp = CreateDefaultSubobject<UTTPawnMovementComponent>(TEXT("PawnMovementComp"));
 
+	TargetLoc = FVector::ZeroVector;
+
 }
 
 float ATTPawnBase::SetMovementSpeed(float NewSpeed)
@@ -60,8 +62,4 @@ float ATTPawnBase::GetRotationSpeed()
 	return RotationSpeed;
 }
 
-void ATTPawnBase::RotateToLook()
-{
-
-}
 

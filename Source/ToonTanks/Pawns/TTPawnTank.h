@@ -33,8 +33,11 @@ public:
 	UFUNCTION()
 	void RotateTurret(float AxisVal);
 
+	UFUNCTION()
+	FVector GetTargetLoc();
+
 	//UFUNCTION()
-	void RotateToLook() override;
+	void RotateToLook(FVector Target) override;
 
 	FRotator TurretMeshRot;
 
@@ -45,8 +48,6 @@ private:
 
 	UPROPERTY()
 	FRotator CurrentRotation;
-
-
 
 	UPROPERTY()
 	float NewYaw;
@@ -61,10 +62,10 @@ private:
 	float MouseY;
 
 	UPROPERTY()
-	FVector ScreenLoc;
+	FVector WorldLoc;
 
 	UPROPERTY()
-	FVector ScreenDirection;
+	FVector WorldDirection;
 
 	UPROPERTY()
 	FVector2D MouseLoc;

@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "ToonTanks/Pawns/TTPawnTank.h"
 #include "Components/SphereComponent.h"
+#include "TimerManager.h"
 
 ATTPawnTurret::ATTPawnTurret()
 {
@@ -19,16 +20,16 @@ ATTPawnTurret::ATTPawnTurret()
 void ATTPawnTurret::CheckFireCondition()
 {
 	// Player must be valid and not dead.
-	if (PawnTank /*&&  !PawnTank->GetIsDead()*/&& GetDistanceToPlayer() <= DistanceThreshold && GetWorld())
-	{
-		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, this, &ATTPawnTurret::RotateToLook, 0.01f, true);
-	}
-	// Clear the rotation timer.
-	else
-	{
-		GetWorld()->GetTimerManager().ClearTimer(RotateTurretTimerHandle);
-		//UE_LOG(LogTemp, Warning, TEXT("Clearing check fire condition timer"));
-	}
+// 	if (PawnTank /*&&  !PawnTank->GetIsDead()*/&& GetDistanceToPlayer() <= DistanceThreshold && GetWorld())
+// 	{
+// 		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, this, &ATTPawnTurret::RotateToLook, 0.01f, true);
+// 	}
+// 	// Clear the rotation timer.
+// 	else
+// 	{
+// 		GetWorld()->GetTimerManager().ClearTimer(RotateTurretTimerHandle);
+// 		//UE_LOG(LogTemp, Warning, TEXT("Clearing check fire condition timer"));
+// 	}
 
 	// Check if the player is in range and if so, fire
 
@@ -53,13 +54,19 @@ float ATTPawnTurret::GetDistanceToPlayer()
 	return -1.f;
 }
 
+void ATTPawnTurret::AcquireTargetAndRotate()
+{
+
+}
+
 void ATTPawnTurret::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	PawnTank = Cast<ATTPawnTank>(OtherActor);
 	
 	if (PawnTank)
 	{
-		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, this, &ATTPawnTurret::RotateToLook, 0.01f, true);
+		RotateTurretTimerDel = FTimerDelegate::CreateUObject(this, &ATTPawnTurret::RotateToLook, GetActorLocation() - PawnTank->GetActorLocation());
+		GetWorld()->GetTimerManager().SetTimer(RotateTurretTimerHandle, RotateTurretTimerDel, 0.02f, true);
 	}
 }
 
@@ -78,7 +85,7 @@ void ATTPawnTurret::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ATTPawnTurret::RotateToLook()
+void ATTPawnTurret::RotateToLook(FVector Target)
 {
 	if (PawnTank)
 	{

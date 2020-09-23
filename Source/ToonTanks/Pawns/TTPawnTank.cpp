@@ -9,6 +9,7 @@
 #include "TTPawnMovementComponent.h"
 #include "TTPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 
 ATTPawnTank::ATTPawnTank()
@@ -31,7 +32,7 @@ ATTPawnTank::ATTPawnTank()
 void ATTPawnTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	RotateToLook();
+	RotateToLook(GetTargetLoc());
 
 }
 
@@ -59,21 +60,21 @@ void ATTPawnTank::MoveFwd(float AxisVal)
 void ATTPawnTank::MoveRight(float AxisVal)
 {
 //	AddMovementInput(GetActorRightVector(), AxisVal);
-	RotateTurret(AxisVal);
-}
-
-void ATTPawnTank::RotateTurret(float AxisVal)
-{
 	if (AxisVal != 0 && CapsuleComp && GetWorld())
 	{
 		CurrentRotation = CapsuleComp->GetComponentRotation();
 		NewYaw = CurrentRotation.Yaw + AxisVal * RotationSpeed;
 		SetActorRotation(FMath::RInterpTo(CurrentRotation, FRotator(CurrentRotation.Pitch, NewYaw, CurrentRotation.Roll), GetWorld()->GetDeltaSeconds(), RotationSpeed));
-		
+
 	}
 }
 
-void ATTPawnTank::RotateToLook()
+void ATTPawnTank::RotateTurret(float AxisVal)
+{
+	
+}
+
+FVector ATTPawnTank::GetTargetLoc()
 {
 	if (PlayerController)
 	{
@@ -81,29 +82,20 @@ void ATTPawnTank::RotateToLook()
 		{
 			MouseLoc.X = MouseX;
 			MouseLoc.Y = MouseY;
-			if (UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseLoc, ScreenLoc, ScreenDirection) && TurretMesh)
-			{
-				TurretMeshRot = TurretMesh->GetComponentRotation(); 
-				TurretMeshRot.Yaw = FRotationMatrix::MakeFromX(ScreenDirection).Rotator().Yaw;
-				if (GetWorld())
-				{
-					TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretMesh->GetComponentRotation(), TurretMeshRot, GetWorld()->GetDeltaSeconds(), RotationSpeed));
-				}
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("didn't deproject"));
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Mouse invalid"))
+			UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseLoc, WorldLoc, TargetLoc);
 		}
 	}
-	else
+	return TargetLoc;
+}
+
+void ATTPawnTank::RotateToLook(FVector Target)
+{
+	TurretMeshRot = TurretMesh->GetComponentRotation(); 
+	TurretMeshRot.Yaw = FRotationMatrix::MakeFromX(Target).Rotator().Yaw;
+	if (GetWorld())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PC Invalid."))
-	}
+		TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretMesh->GetComponentRotation(), TurretMeshRot, GetWorld()->GetDeltaSeconds(), RotationSpeed));
+	}		
 }
 
 void ATTPawnTank::BeginPlay()
@@ -112,8 +104,8 @@ void ATTPawnTank::BeginPlay()
 	PlayerController = Cast<ATTPlayerController>(GetWorld()->GetFirstPlayerController());
 	MouseX = -1.f;
 	MouseY = -1.f;
-	ScreenLoc = FVector(FVector::ZeroVector);
-	ScreenDirection = FVector(FVector::ZeroVector);
+	WorldLoc = FVector(FVector::ZeroVector);
+	WorldDirection = FVector(FVector::ZeroVector);
 	MouseLoc = FVector2D(-1.f, -1.f);
 	TurretMeshRot = FRotator(FRotator::ZeroRotator);
 }
