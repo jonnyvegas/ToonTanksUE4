@@ -36,6 +36,9 @@ public:
 	UFUNCTION()
 	virtual void Fire();
 
+	UFUNCTION()
+	void PawnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -52,6 +55,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class UTTPawnMovementComponent* MovementComp;
+
+	UPROPERTY(VisibleAnywhere)
+	class UTTHealthComponent* HealthComp;
 
 	UPROPERTY()
 	class ATTPlayerController* PlayerController;

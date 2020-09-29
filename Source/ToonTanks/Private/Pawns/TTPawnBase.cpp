@@ -9,6 +9,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "TTPawnMovementComponent.h"
 #include "TTProjectile.h"
+#include "TTHealthComponent.h"
 
 // Sets default values
 ATTPawnBase::ATTPawnBase()
@@ -30,7 +31,11 @@ ATTPawnBase::ATTPawnBase()
 
 	MovementComp = CreateDefaultSubobject<UTTPawnMovementComponent>(TEXT("PawnMovementComp"));
 
+	HealthComp = CreateDefaultSubobject<UTTHealthComponent>(TEXT("HealthComp"));
+
 	TargetLoc = FVector::ZeroVector;
+
+	this->OnTakeAnyDamage.AddDynamic(this, &ATTPawnBase::PawnTakeDamage);
 
 }
 
@@ -69,7 +74,14 @@ void ATTPawnBase::Fire()
 	{
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Owner = this;
+		// TODO: Spawn actor deferred, set owner, then finish spawning.
 		GetWorld()->SpawnActor<ATTProjectile>(ProjectileClass, ProjectileSpawnComp->GetComponentTransform(), SpawnParams);
 	}
+}
+
+void ATTPawnBase::PawnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Damage done: %f"), Damage);
 }
 

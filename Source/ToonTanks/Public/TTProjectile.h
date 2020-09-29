@@ -19,12 +19,28 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void MeshBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class UStaticMeshComponent* ProjectileMeshComp;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class UProjectileMovementComponent* ProjectileMovementComp;
 
-public:	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UDamageType> DmgType;
+
+	UPROPERTY(EditAnywhere)
+	float MovementSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float DamageAmount;
+
+
+
+private:
+
+
 
 };
