@@ -17,4 +17,9 @@ class TOONTANKS_API ATTGameMode : public AGameMode
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void PawnDied(bool bPlayerPawn);
+
+	virtual void StartPlay() override;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AActor> TurretClass;
 };
