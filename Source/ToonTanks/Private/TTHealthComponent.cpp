@@ -2,6 +2,8 @@
 
 
 #include "TTHealthComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "TTGameMode.h"
 
 // Sets default values for this component's properties
 UTTHealthComponent::UTTHealthComponent()
@@ -24,6 +26,31 @@ void UTTHealthComponent::ResetHealth()
 bool UTTHealthComponent::GetIsDead()
 {
 	return CurrentHealth <= 0.f;
+}
+
+void UTTHealthComponent::SetHealth(float NewHealth)
+{
+	CurrentHealth = NewHealth;
+}
+
+void UTTHealthComponent::AddHealth(float AmtToAdd)
+{
+	CurrentHealth += AmtToAdd;
+	FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
+	if (CurrentHealth <= 0.f)
+	{
+		DeathDel.Broadcast(GetOwner());
+		ATTGameMode* GM = Cast<ATTGameMode>(UGameplayStatics::GetGameMode(this));
+		if (GM)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Game mode valid"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Game mode NOT valid"));
+		}
+		//UE_LOG(LogTemp, Warning, TEXT("You killed %s"), *GetOwner()->GetName());
+	}
 }
 
 // Called when the game starts

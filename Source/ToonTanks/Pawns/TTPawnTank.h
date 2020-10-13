@@ -83,4 +83,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* CameraComp;
+
+	void ReactToDeath(AActor* DeadActor) override;
 };

@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "TTHealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTTDeathDelegate, class AActor*, ActorKilled);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TOONTANKS_API UTTHealthComponent : public UActorComponent
@@ -22,6 +23,19 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool GetIsDead();
+
+	void SetHealth(float NewHealth);
+
+	/**
+	* Adds health to the player component.
+	* Subtracts health if the value is negative.
+	* @param	  AmtToAdd - How much health to add/remove
+	*/
+
+	UFUNCTION()
+	void AddHealth(float AmtToAdd);
+
+	FTTDeathDelegate DeathDel;
 
 protected:
 	// Called when the game starts

@@ -103,7 +103,7 @@ void ATTPawnTank::RotateToLook(FVector Target)
 
 void ATTPawnTank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tank fire!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Tank fire!"));
 	Super::Fire();
 }
 
@@ -117,4 +117,9 @@ void ATTPawnTank::BeginPlay()
 	WorldDirection = FVector(FVector::ZeroVector);
 	MouseLoc = FVector2D(-1.f, -1.f);
 	TurretMeshRot = FRotator(FRotator::ZeroRotator);
+}
+
+void ATTPawnTank::ReactToDeath(AActor* DeadActor)
+{
+	Super::ReactToDeath(DeadActor);
 }

@@ -37,6 +37,8 @@ ATTPawnBase::ATTPawnBase()
 
 	this->OnTakeAnyDamage.AddDynamic(this, &ATTPawnBase::PawnTakeDamage);
 
+	this->HealthComp->DeathDel.AddDynamic(this, &ATTPawnBase::ReactToDeath);
+
 }
 
 float ATTPawnBase::SetMovementSpeed(float NewSpeed)
@@ -82,6 +84,19 @@ void ATTPawnBase::Fire()
 
 void ATTPawnBase::PawnTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Damage done: %f"), Damage);
+	ATTPawnBase* PawnBase = Cast<ATTPawnBase>(DamagedActor);
+	if (PawnBase)
+	{
+		PawnBase->HealthComp->AddHealth(-1 * Damage);
+	}
+}
+
+void ATTPawnBase::ReactToDeath(AActor* DeadActor)
+{
+	// Explode
+
+	// Set lifetime before removal
+
+	// Get the UI to react to our death depending on who we are (send our actor to the GameMode).
 }
 

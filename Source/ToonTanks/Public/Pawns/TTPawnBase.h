@@ -39,6 +39,9 @@ public:
 	UFUNCTION()
 	void PawnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
+	UFUNCTION()
+	virtual void ReactToDeath(AActor* DeadActor);
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
