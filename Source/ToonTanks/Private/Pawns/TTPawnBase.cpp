@@ -87,7 +87,7 @@ void ATTPawnBase::PawnTakeDamage(AActor* DamagedActor, float Damage, const class
 	ATTPawnBase* PawnBase = Cast<ATTPawnBase>(DamagedActor);
 	if (PawnBase)
 	{
-		PawnBase->HealthComp->AddHealth(-1 * Damage);
+		PawnBase->HealthComp->AddOrRemoveHealth(-1 * Damage);
 	}
 }
 

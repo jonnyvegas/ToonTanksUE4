@@ -33,7 +33,7 @@ public:
 	*/
 
 	UFUNCTION()
-	void AddHealth(float AmtToAdd);
+	void AddOrRemoveHealth(float AmtToAdd);
 
 	FTTDeathDelegate DeathDel;
 

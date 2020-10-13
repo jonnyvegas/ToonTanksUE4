@@ -15,11 +15,22 @@ class TOONTANKS_API ATTGameMode : public AGameMode
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintImplementableEvent)
-	void PawnDied(bool bPlayerPawn);
+	ATTGameMode();
 
 	virtual void StartPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void PawnDied(bool bPlayerPawn);
+
+	UFUNCTION()
+	int32 GetNumEnemies();
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> TurretClass;
+
+
+private:
+
+	UPROPERTY()
+	int32 NumEnemies;
 };

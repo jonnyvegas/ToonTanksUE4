@@ -4,6 +4,8 @@
 #include "TTHealthComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TTGameMode.h"
+#include "../Pawns/TTPawnTank.h"
+#include "TTGameState.h"
 
 // Sets default values for this component's properties
 UTTHealthComponent::UTTHealthComponent()
@@ -33,23 +35,28 @@ void UTTHealthComponent::SetHealth(float NewHealth)
 	CurrentHealth = NewHealth;
 }
 
-void UTTHealthComponent::AddHealth(float AmtToAdd)
+void UTTHealthComponent::AddOrRemoveHealth(float AmtToAdd)
 {
 	CurrentHealth += AmtToAdd;
 	FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
 	if (CurrentHealth <= 0.f)
 	{
-		DeathDel.Broadcast(GetOwner());
+		//DeathDel.Broadcast(GetOwner());
 		ATTGameMode* GM = Cast<ATTGameMode>(UGameplayStatics::GetGameMode(this));
-		if (GM)
+		ATTPawnTank* PawnTank = Cast<ATTPawnTank>(GetOwner());
+		if (PawnTank)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Game mode valid"));
+			// Pawn died!
+			GM->PawnDied(true);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Game mode NOT valid"));
+			// Increase the number of enemies from the game state. Have the game state check the game mode.
+			ATTGameState* GS = Cast<ATTGameState>(UGameplayStatics::GetGameState(this));
+			GS->IncreaseDeadBotCount();
+			GS->CheckIfAllBotsDead();
 		}
-		//UE_LOG(LogTemp, Warning, TEXT("You killed %s"), *GetOwner()->GetName());
+		
 	}
 }
 
