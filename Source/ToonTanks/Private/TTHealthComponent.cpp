@@ -42,12 +42,16 @@ void UTTHealthComponent::AddOrRemoveHealth(float AmtToAdd)
 	if (CurrentHealth <= 0.f)
 	{
 		//DeathDel.Broadcast(GetOwner());
-		ATTGameMode* GM = Cast<ATTGameMode>(UGameplayStatics::GetGameMode(this));
+		
 		ATTPawnTank* PawnTank = Cast<ATTPawnTank>(GetOwner());
 		if (PawnTank)
 		{
+			ATTGameMode* GM = Cast<ATTGameMode>(UGameplayStatics::GetGameMode(this));
 			// Pawn died!
-			GM->PawnDied(true);
+			if(GM)
+			{
+				GM->PawnDied(true);
+			}
 		}
 		else
 		{
