@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "TTHealthComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTTDeathDelegate, class AActor*, ActorKilled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTTDeathDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TOONTANKS_API UTTHealthComponent : public UActorComponent
@@ -49,6 +49,6 @@ protected:
 
 private:
 	
-
+	class ATTPawnBase* TTPawn;
 		
 };

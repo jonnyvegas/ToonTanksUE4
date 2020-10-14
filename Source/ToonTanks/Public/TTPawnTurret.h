@@ -71,6 +71,4 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void ReactToDeath(AActor* DeadActor) override;
-
 };

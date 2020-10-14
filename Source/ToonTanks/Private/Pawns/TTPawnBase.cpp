@@ -10,6 +10,7 @@
 #include "TTPawnMovementComponent.h"
 #include "TTProjectile.h"
 #include "TTHealthComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ATTPawnBase::ATTPawnBase()
@@ -37,7 +38,7 @@ ATTPawnBase::ATTPawnBase()
 
 	this->OnTakeAnyDamage.AddDynamic(this, &ATTPawnBase::PawnTakeDamage);
 
-	this->HealthComp->DeathDel.AddDynamic(this, &ATTPawnBase::ReactToDeath);
+	this->HealthComp->DeathDel.AddDynamic(this, &ATTPawnBase::HandleDeath);
 
 }
 
@@ -88,15 +89,19 @@ void ATTPawnBase::PawnTakeDamage(AActor* DamagedActor, float Damage, const class
 	if (PawnBase)
 	{
 		PawnBase->HealthComp->AddOrRemoveHealth(-1 * Damage);
+		HandleDamage();
 	}
 }
 
-void ATTPawnBase::ReactToDeath(AActor* DeadActor)
+void ATTPawnBase::HandleDeath()
 {
 	// Explode
-
+	if (DeathParticle)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathParticle, GetActorTransform());
+	}
 	// Set lifetime before removal
-
+	this->Destroy();
 	// Get the UI to react to our death depending on who we are (send our actor to the GameMode).
 }
 

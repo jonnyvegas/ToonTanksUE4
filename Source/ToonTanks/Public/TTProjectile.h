@@ -41,6 +41,7 @@ protected:
 
 private:
 
-
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* HitParticle;
 
 };

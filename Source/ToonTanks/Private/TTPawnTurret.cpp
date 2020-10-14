@@ -100,8 +100,3 @@ void ATTPawnTurret::BeginPlay()
 	DistanceThreshold = 500.f;
 
 }
-
-void ATTPawnTurret::ReactToDeath(AActor* DeadActor)
-{
-	Super::ReactToDeath(DeadActor);
-}

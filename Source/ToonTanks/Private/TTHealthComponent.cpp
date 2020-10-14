@@ -41,9 +41,9 @@ void UTTHealthComponent::AddOrRemoveHealth(float AmtToAdd)
 	FMath::Clamp(CurrentHealth, 0.f, MaxHealth);
 	if (CurrentHealth <= 0.f)
 	{
-		//DeathDel.Broadcast(GetOwner());
+		DeathDel.Broadcast();
 		
-		ATTPawnTank* PawnTank = Cast<ATTPawnTank>(GetOwner());
+		ATTPawnTank* PawnTank = Cast<ATTPawnTank>(TTPawn);
 		if (PawnTank)
 		{
 			ATTGameMode* GM = Cast<ATTGameMode>(UGameplayStatics::GetGameMode(this));
@@ -77,6 +77,6 @@ void UTTHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	TTPawn = Cast<ATTPawnBase>(GetOwner());
 }
 

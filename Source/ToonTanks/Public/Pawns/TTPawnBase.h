@@ -37,10 +37,14 @@ public:
 	virtual void Fire();
 
 	UFUNCTION()
-	void PawnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	virtual void PawnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void HandleDamage();
+	//void PawnTakeDamage_Implementation(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	UFUNCTION()
-	virtual void ReactToDeath(AActor* DeadActor);
+	virtual void HandleDeath();
 
 protected:
 
@@ -79,4 +83,8 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ATTProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* DeathParticle;
+
 };

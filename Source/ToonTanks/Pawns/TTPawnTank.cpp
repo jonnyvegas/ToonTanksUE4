@@ -107,6 +107,12 @@ void ATTPawnTank::Fire()
 	Super::Fire();
 }
 
+void ATTPawnTank::PawnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	Super::PawnTakeDamage(DamagedActor, Damage, DamageType, InstigatedBy, DamageCauser);
+
+}
+
 void ATTPawnTank::BeginPlay()
 {
 	Super::BeginPlay();
@@ -117,9 +123,4 @@ void ATTPawnTank::BeginPlay()
 	WorldDirection = FVector(FVector::ZeroVector);
 	MouseLoc = FVector2D(-1.f, -1.f);
 	TurretMeshRot = FRotator(FRotator::ZeroRotator);
-}
-
-void ATTPawnTank::ReactToDeath(AActor* DeadActor)
-{
-	Super::ReactToDeath(DeadActor);
 }

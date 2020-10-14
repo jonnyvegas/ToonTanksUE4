@@ -38,6 +38,10 @@ void ATTProjectile::MeshBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 		UGameplayStatics::ApplyDamage(OtherActor, DamageAmount, nullptr, GetOwner(), DmgType);
 		this->Destroy();
 		// Spawn effects if we hit something. Otherwise just hit the ground and nothing happens, kill it.
+		if (HitParticle)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, GetActorTransform());
+		}
 	}
 }
 

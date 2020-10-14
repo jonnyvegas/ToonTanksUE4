@@ -41,6 +41,8 @@ public:
 
 	void Fire() override;
 
+	virtual void PawnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) override;
+
 private:
 
 	UPROPERTY()
@@ -84,5 +86,4 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* CameraComp;
 
-	void ReactToDeath(AActor* DeadActor) override;
 };
