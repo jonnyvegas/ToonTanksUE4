@@ -53,8 +53,15 @@ void UTTHealthComponent::AddOrRemoveHealth(float AmtToAdd)
 		{
 			// Increase the number of enemies from the game state. Have the game state check the game mode.
 			ATTGameState* GS = Cast<ATTGameState>(UGameplayStatics::GetGameState(this));
-			GS->IncreaseDeadBotCount();
-			GS->CheckIfAllBotsDead();
+			if (GS)
+			{
+				GS->IncreaseDeadBotCount();
+				GS->CheckIfAllBotsDead();
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Game state not valid"));
+			}
 		}
 		
 	}

@@ -26,5 +26,5 @@ private:
 	
 	int32 NumDeadBots;
 
-	ATTGameMode* GameMode;
+	class ATTGameMode* GameMode;
 };

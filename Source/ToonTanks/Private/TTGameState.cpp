@@ -23,8 +23,9 @@ void ATTGameState::IncreaseDeadBotCount()
 
 void ATTGameState::CheckIfAllBotsDead()
 {
-	if (GameMode && NumDeadBots == GameMode->GetNumEnemies())
+	if (GameMode && NumDeadBots >= GameMode->GetNumEnemies())
 	{
 		// Game mode... stop the game. Show a widget to the player that they killed everyone. Victory!
+		GameMode->PawnDied(false);
 	}
 }
